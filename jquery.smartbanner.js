@@ -28,8 +28,14 @@
     else if (UA.match(/Windows Phone/i) !== null && UA.match(/Edge|Touch/i) !== null) {
       this.type = 'windows';
     }
-    else if (UA.match(/iPhone|iPod/i) !== null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) { 
-      this.type = 'ios';
+    else if (UA.match(/iPhone|iPod/i) !== null || (UA.match(/iPad/) && this.options.iOSUniversalApp)) {
+      if (UA.match(/Safari/i) !== null &&
+        (UA.match(/CriOS/i) !== null ||
+          UA.match(/FxiOS/i) != null ||
+          window.Number(UA.substr(UA.indexOf('OS ') + 3, 3).replace('_', '.')) < 6)) {
+        // Check webview and native smart banner support (iOS 6+).
+        this.type = 'ios';
+      }
     }
     else if (UA.match(/\bSilk\/(.*\bMobile Safari\b)?/) || UA.match(/\bKF\w/) || UA.match('Kindle Fire')) {
       this.type = 'kindle';
